@@ -31,7 +31,7 @@ def import_graph(file):
                                      'refined_polarity' : refined_polarity})
             #g.add_edge(source, target, object = event_id, confidence = confidence, negation = negation, speculation = speculation, coarse_type = coarse_type, coarse_polarity = coarse_polarity, refined_type = refined_type, refined_polarity = refined_polarity)
             g.add_edges_from([edge])
-            if g.number_of_edges() >= 5000:
+            if g.number_of_edges() >= 500:
                 break
     print 'a MultiDiGraph is constructed'
     print 'graph has', g.number_of_nodes(), 'nodes'
@@ -78,3 +78,4 @@ if __name__ == '__main__':
     nx.draw_networkx_edges(t,pos,alpha=0.4)
     plt.savefig('relations_of_relations.tif')
     plt.close()
+    rank = nx.pagerank(t)
