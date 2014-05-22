@@ -10,8 +10,8 @@ currently I am not sure wether all edges allow transitive inductions at the same
 from scipy import stats
 import numpy as np
 import matplotlib.pyplot as plt
-
 import networkx as nx
+import pickle
 
 from toolbox.graph_io.evex.nx import import_graph
 from toolbox.ranking.transitiveness import trans, ditrans
@@ -35,6 +35,8 @@ for e in graph.edges_iter():
 plt.hold(False)
 
 degree_centrality = nx.degree_centrality(graph)
+for i in degree_centrality:
+    graph.node[i].update(degree_centrality = degree_centrality[i])
 plt.hist(degree_centrality.values(), bins = 100, range = (0, 1))
 plt.savefig('graph_degree_centrality_hist.png')
 plt.hist(as_at, bins = 100, range = (0, 1))
@@ -73,6 +75,8 @@ for e in digraph.edges_iter():
 plt.hold(False)
 
 degree_centrality = nx.degree_centrality(digraph)
+for i in degree_centrality:
+    digraph.node[i].update(degree_centrality = degree_centrality[i])
 plt.hist(degree_centrality.values(), bins = 100, range = (0, 1))
 plt.savefig('digraph_degree_centrality_hist.png')
 plt.hist(as_at, bins = 100, range = (0, 1))
@@ -101,3 +105,8 @@ plt.scatter(at_as, sa_ta)
 plt.savefig('digraph_at_as_sa_ta.png')
 plt.hexbin(at_as, sa_ta, bins = 'log')
 plt.savefig('digraph_at_as_sa_ta_hexbin.png')
+
+with open('evex_graph.graph', 'w') as evex_graph:
+    pickle.dump(graph, evex_graph)
+with open('evex_digraph.graph', 'w') as evex_digraph:
+    pickle.dump(digraph, evex_digraph)
