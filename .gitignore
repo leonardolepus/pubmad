@@ -1,0 +1,15 @@
+#files ending with ~
+*~
+#files starting with #
+[~#]*
+#.pyc files
+*.pyc
+#nohup
+nohup*
+#.tif
+*.tif
+#.png
+*.png
+data*
+output*
+*.graph
