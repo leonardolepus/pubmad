@@ -1,4 +1,5 @@
 '''
+this experiment deals with transitiveness defined as conditional probabilities of various conditions
 in this experiment various transitiveness are calculated, and their distributions and associations are examined
 the data shows that
 a. if a node is connected to one end of an edge, it is more likely to be connected to the other end, compared to a randomly chosen node in the whole graph
