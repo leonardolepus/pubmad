@@ -30,7 +30,11 @@ bc = nx.betweenness_centrality(kegg)
 #acfbc = nx.approximate_current_flow_betweenness_centrality(kegg)   #only applicable to connected undirected graphs
 ec = nx.eigenvector_centrality_numpy(kegg)
 kc = nx.katz_centrality_numpy(kegg)
+<<<<<<< HEAD
 #cce = nx.communicability_centrality_exp(kegg)   #only applicable to undirected graphs. it doesn't seem to make much sense and it causes segmentation fault... maybe due to long loops... so i removed it
+=======
+cce = nx.communicability_centrality_exp(kegg)   #only applicable to undirected graphs
+>>>>>>> 2992142e950ed8208d2b41810808e4e12ff2921e
 lc = nx.load_centrality(kegg)
 trg = nx.triangles(kegg)   #only applicable to undirected graphs
 dgr = nx.degree(kegg)
