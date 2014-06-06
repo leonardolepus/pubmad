@@ -11,7 +11,7 @@ for feature_file in os.listdir('../../data/evex/Homo_Sapiens/features/'):
         try:
             features[feature_file] = pickle.load(f)
         except:
-            print sys.exc_info()
+            print feature_file, sys.exc_info()
 edge_betweenness_centrality = features['edge_betweenness_centrality']
 del features['edge_betweenness_centrality']
 
@@ -32,3 +32,4 @@ for i, j in itertools.product(features, features):
     fi = features[i].values()
     fj = features[j].values()
     association(fi, fj, i, j)
+
