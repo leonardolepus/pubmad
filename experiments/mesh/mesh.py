@@ -36,14 +36,6 @@ def retrieve_graph_from_query(query, graph, max_records = null):
             pass
 
 
-g = nx.MultiGraph()
-query = 'hydrogen sulfide[Mesh]'
-retrieve_graph_from_query(query, g)
-print 'graph has %d nodes, %d edges' % (g.number_of_nodes(), g.number_of_edges())
-nx.draw(g)
-plt.show()
-
-
 def retrieve_bin_occr(entity1, entity2, field1 = ' ', field2 = ' '):
     Entrez.email = EMAIL
     query = '''"%s"[%s] AND "%s"[%s]''' % (entity1, field1, entity2, field2)
@@ -63,8 +55,50 @@ def retrieve_graph_from_entities(entities, graph):
         graph.add_edges_from(edge_list)
 
 
-entities = ['hydrogen sulfide', "alzheimer's", "parkinson's", 'stroke', 'inflammation', 'apoptosis']
-g = nx.MultiGraph()
-retrieve_graph_from_entities(entities, g)
-nx.draw(g, with_lables = True)
-plt.show()
+def retrieve_index_from_uid(uid, corpus):
+    Entrez.email = EMAIL
+    handle = Entrez.efetch(db = 'pubmed', id = uid, retmode = 'xml')
+    entre = Entrez.read(handle)
+    handle.close()
+    try:
+        mesh = [str(m['DescriptorName']) for m in entre[0]['MedlineCitation']['MeshHeadingList']]
+        corpus[uid] = mesh
+        print 'retrieved %s' % (uid, )
+        return 1
+    except KeyError:
+        print '%s is not index, skipped' % (uid, )
+        return 0
+
+    
+if __name__ == '__main__':        
+    g = nx.MultiGraph()
+    query = 'hydrogen sulfide[Mesh]'
+    retrieve_graph_from_query(query, g)
+    print 'graph has %d nodes, %d edges' % (g.number_of_nodes(), g.number_of_edges())
+    nx.draw(g)
+    plt.show()
+
+    entities = ['hydrogen sulfide', "alzheimer's", "parkinson's", 'stroke', 'inflammation', 'apoptosis']
+    g = nx.MultiGraph()
+    retrieve_graph_from_entities(entities, g)
+    nx.draw(g, with_lables = True)
+    plt.show()
+
+
+    #construct list of uids
+    Entrez.email = EMAIL
+    handle = Entrez.esearch(db = 'pubmed', term = '''("1900"[Date - MeSH] : "3000"[Date - MeSH])''', retmode = 'text')
+    records = Entrez.read(handle)
+    handle.close()
+    count = int(records['Count'])
+    for retstart in range(10000000, count, 100000):
+        handle = Entrez.esearch(db = 'pubmed', term = '''("1900"[Date - MeSH] : "3000"[Date - MeSH])''', retstart = retstart, retmax = 100000, retmode = 'text')
+        records = Entrez.read(handle)
+        handle.close()
+        uids = records['IdList']
+        for uid in uids:
+            if retrieve_index_from_uid(uid, corpus):
+                break
+        break
+
+
