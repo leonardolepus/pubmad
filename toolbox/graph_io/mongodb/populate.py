@@ -43,5 +43,3 @@ if posts:
             print 'insert error, failed posts saved'
         finally:
             posts = []
-
-
